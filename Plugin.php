@@ -5,10 +5,11 @@
  *
  * @package WowScroll
  * @author Sanakey
- * @version 1.0.0
+ * @version 1.1.0
  * @link https://keypoi.com
  */
 class WowScroll_Plugin implements Typecho_Plugin_Interface {
+
      /**
      * 激活插件方法,如果激活失败,直接抛出异常
      * 
@@ -54,7 +55,7 @@ class WowScroll_Plugin implements Typecho_Plugin_Interface {
 
             echo "</div>";
         }
-        check_update("1.0");
+        check_update("1.1.0");
 
         // 动画元素
         $elements = new Typecho_Widget_Helper_Form_Element_Text(
@@ -67,12 +68,12 @@ class WowScroll_Plugin implements Typecho_Plugin_Interface {
         $form->addInput($elements);
         
         //  选择动画效果
-        $styles = array('bounce','flash','pulse','rubberBand','shake','swing','tada','wobble','jello','heartBeat','bounceIn','bounceInDown','bounceInLeft','bounceInRight','bounceInUp','fadeIn','fadeInDown','fadeInDownBig','fadeInLeft','fadeInLeftBig','fadeInRight','fadeInRightBig','fadeInUp','fadeInUpBig','flip','flipInX','flipInY','lightSpeedIn','rotateIn','rotateInDownLeft','rotateInDownRight','rotateInUpLeft','rotateInUpRight','slideInUp','slideInDown','slideInLeft','slideInRight','zoomIn','zoomInDown','zoomInLeft','zoomInRight','zoomInUp','jackInTheBox','rollIn');
+        $styles = self::getStyleArray();
         $styles = array_combine($styles, $styles);
         $animate = new Typecho_Widget_Helper_Form_Element_Select(
             'animate',
             $styles,
-            'rubberBand',
+            '随机动画',
             _t('选择动画效果'),
             _t('动画效果请参考<a href="https://daneden.github.io/animate.css/">animate.css官方文档</a>，只筛选了入场动画。')
         );
@@ -118,6 +119,18 @@ class WowScroll_Plugin implements Typecho_Plugin_Interface {
         );
         $form->addInput($pjax);
 
+    }
+
+
+    /**
+     * 获取动画类型数组
+     * 
+     * @access private
+     * @return 
+     */
+    private static function getStyleArray() {
+        $styleArray = array('完全随机模式','统一随机模式','bounce','flash','pulse','rubberBand','shake','swing','tada','wobble','jello','heartBeat','bounceIn','bounceInDown','bounceInLeft','bounceInRight','bounceInUp','fadeIn','fadeInDown','fadeInDownBig','fadeInLeft','fadeInLeftBig','fadeInRight','fadeInRightBig','fadeInUp','fadeInUpBig','flip','flipInX','flipInY','lightSpeedIn','rotateIn','rotateInDownLeft','rotateInDownRight','rotateInUpLeft','rotateInUpRight','slideInUp','slideInDown','slideInLeft','slideInRight','zoomIn','zoomInDown','zoomInLeft','zoomInRight','zoomInUp','jackInTheBox','rollIn');
+        return $styleArray;
     }
 
     /**
@@ -189,36 +202,70 @@ class WowScroll_Plugin implements Typecho_Plugin_Interface {
         } else {
             $script .= 'windowOnload()';
         }
+        $styleArray = json_encode(self::getStyleArray());
+        // 处理随机
+        if($animate == '统一随机模式'){
+            $code = "$(this).addClass('wow ' + randomMode)";
+        }
+        if($animate == '完全随机模式'){
+            $code = "$(this).addClass('wow ' + handleAnimate())";
+        }
+        if(strpos($animate, '随机') == false){
+            $code = "$(this).addClass('wow ' + '{$animate}')";
+        }
+        
         echo <<<HTML
             <script type="text/javascript">
                 $script;
-                // console.log({$eleArray});
                 var eleArray = {$eleArray};
+                var styleArray = {$styleArray};
+                var randomMode = '';
+                var isRandom = false;
                 function windowOnload() {
+                    // console.log('windowOnload');
                     $(window).load(function () {
-                        // console.log('windowOnload');
+                        handleAnimate();
                         eleArray.forEach(function(item){
                             $(item.trim()).each(function () {
-                                $(this).addClass('wow ' + '{$animate}');
+                                $code;
                             });
                         })
-            
                     })
                 }
                 function pjaxCallback() {
                     // console.log('pjaxCallback');
                     $(window).on("load pjax:end", function () {
+                        handleAnimate();
                         eleArray.forEach(function(item){
                             $(item.trim()).each(function () {
-                                $(this).addClass('wow ' + '{$animate}');
+                                $code;
                             });
                         })
                     });
                 }
+                function handleAnimate() {
+                    if('{$animate}'.indexOf('随机模式') > -1){
+                        randomMode = styleArray[2 + Math.floor( Math.random() * styleArray.length - 2)];
+                        return randomMode;
+                    }
+                    return '{$animate}';
+                }
+                // function handleRandomMode(){
+                //     if('{$animate}' === '统一随机模式'){
+                //         isRandom = false;
+                //         $(this).addClass('wow ' + handleAnimate());
+                //     }
+                //     if('{$animate}' === '完全随机模式'){
+                //         isRandom = true;
+                //         $(this).addClass('wow ' + handleAnimate());
+                //     }
+                //     randomMode = handleAnimate();
+                //     return isRandom;
+                // }
                 var wow = new WOW({
                       boxClass: 'wow',
                       animateClass: 'animated',
-                      offset: 0,
+                      offset: 100,
                       mobile: true,
                       live: true
                     });
