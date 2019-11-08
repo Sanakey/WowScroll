@@ -19,6 +19,11 @@
 
 * 关于动画的种类与预览效果，[查看animate.css文档](https://daneden.github.io/animate.css)
 
+## 更新
+### 1.1.0
+* 添加完全随机动画模式
+* 添加统一随机动画模式
+
 ## 效果
 预览效果: [Sanakeyの小站](https://keymoe.com)
 

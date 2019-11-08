@@ -51,7 +51,7 @@ class WowScroll_Plugin implements Typecho_Plugin_Interface {
             echo "<p>By: <a href='https://github.com/Sanakey'>Sanakey</a></p>";
             echo "<p class='buttons'><a href='https://keymoe.com/archives/55/'>插件说明</a>
                 <a href='https://github.com/Sanakey/WowScroll'>查看更新</a></p>";
-            echo "<p>更多说明请点击插件说明或<a href='https://github.com/Sanakey/WowScroll'>点击前往github查看</a>~</p>";
+            echo "<p>感谢使用！更多说明请点击插件说明或<a href='https://github.com/Sanakey/WowScroll'>点击前往github查看</a>~</p>";
 
             echo "</div>";
         }
@@ -250,18 +250,7 @@ class WowScroll_Plugin implements Typecho_Plugin_Interface {
                     }
                     return '{$animate}';
                 }
-                // function handleRandomMode(){
-                //     if('{$animate}' === '统一随机模式'){
-                //         isRandom = false;
-                //         $(this).addClass('wow ' + handleAnimate());
-                //     }
-                //     if('{$animate}' === '完全随机模式'){
-                //         isRandom = true;
-                //         $(this).addClass('wow ' + handleAnimate());
-                //     }
-                //     randomMode = handleAnimate();
-                //     return isRandom;
-                // }
+     
                 var wow = new WOW({
                       boxClass: 'wow',
                       animateClass: 'animated',
