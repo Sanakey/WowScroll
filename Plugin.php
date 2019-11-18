@@ -223,7 +223,7 @@ class WowScroll_Plugin implements Typecho_Plugin_Interface {
                 var isRandom = false;
                 function windowOnload() {
                     // console.log('windowOnload');
-                    $(window).load(function () {
+                    $(document).ready(function () {
                         handleAnimate();
                         eleArray.forEach(function(item){
                             $(item.trim()).each(function () {
@@ -234,7 +234,7 @@ class WowScroll_Plugin implements Typecho_Plugin_Interface {
                 }
                 function pjaxCallback() {
                     // console.log('pjaxCallback');
-                    $(window).on("load pjax:end", function () {
+                    $(document).on("ready pjax:end", function () {
                         handleAnimate();
                         eleArray.forEach(function(item){
                             $(item.trim()).each(function () {
