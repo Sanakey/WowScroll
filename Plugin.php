@@ -5,8 +5,8 @@
  *
  * @package WowScroll
  * @author Sanakey
- * @version 1.1.0
- * @link https://keypoi.com
+ * @version 1.1.1
+ * @link https://keymoe.com
  */
 class WowScroll_Plugin implements Typecho_Plugin_Interface {
 
