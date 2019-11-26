@@ -55,7 +55,7 @@ class WowScroll_Plugin implements Typecho_Plugin_Interface {
 
             echo "</div>";
         }
-        check_update("1.1.0");
+        check_update("1.1.1");
 
         // 动画元素
         $elements = new Typecho_Widget_Helper_Form_Element_Text(
